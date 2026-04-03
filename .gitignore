@@ -1,0 +1,10 @@
+*.pth
+*.log
+__pycache__/
+.DS_Store
+*.pyc
+.vscode/
+*.zip
+*.tar.gz
+images/
+codes/
