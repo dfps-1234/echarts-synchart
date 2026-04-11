@@ -12,6 +12,22 @@ This repository contains the code and dataset for the paper *"ECharts-SynChart: 
   The dataset is accompanied by train/val/test CSV split files (included in this repository).
   The dataset is provided as a single compressed archive (`echarts-synchart-images.tar.gz`, ~486 MB). After downloading, extract the images; the archive contains an images/folder. Place this images/folder in the repository root (alongside README.md).
 
+## Data Collection
+
+We collected 348 official ECharts examples using a custom crawler script ([`node_scripts/crawl_echarts_examples.js`](node_scripts/crawl_echarts_examples.js)). The script uses Puppeteer to:
+
+- Navigate to each example’s editor page
+- Capture a screenshot of the rendered chart (saved as PNG)
+- Extract the JavaScript code from the ACE editor (saved as JS)
+
+The original ECharts example code is licensed under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). All collected data are used solely for academic research.
+
+If you wish to reproduce the dataset from scratch, run:
+```bash
+node node_scripts/crawl_echarts_examples.js
+This will populate data/raw/echarts/screenshots/ and data/raw/echarts/codes/.
+```
+
 ## Code Structure
 
 - `scripts/` – Python scripts for data augmentation, training, and evaluation.
