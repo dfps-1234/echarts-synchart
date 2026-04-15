@@ -10,23 +10,7 @@ This repository contains the code and dataset for the paper *"ECharts-SynChart: 
 - **Source**: Generated from [ECharts](https://echarts.apache.org/) official examples with data augmentation (numerical perturbation, color variation, label replacement).
 - **Download**: [https://doi.org/10.5281/zenodo.19401089](https://doi.org/10.5281/zenodo.19401089)  
   The dataset is accompanied by train/val/test CSV split files (included in this repository).
-  The dataset is provided as a single compressed archive (`echarts-synchart-images.tar.gz`, ~486 MB). After downloading, extract the images; the archive contains an images/folder. Place this images/folder in the repository root (alongside README.md).
-
-## Data Collection
-
-We collected 348 official ECharts examples using a custom crawler script ([`node_scripts/crawl_echarts_examples.js`](node_scripts/crawl_echarts_examples.js)). The script uses Puppeteer to:
-
-- Navigate to each example’s editor page
-- Capture a screenshot of the rendered chart (saved as PNG)
-- Extract the JavaScript code from the ACE editor (saved as JS)
-
-The original ECharts example code is licensed under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0). All collected data are used solely for academic research.
-
-If you wish to reproduce the dataset from scratch, run:
-```bash
-node node_scripts/crawl_echarts_examples.js
-This will populate data/raw/echarts/screenshots/ and data/raw/echarts/codes/.
-```
+  The dataset is provided as a single compressed archive (`echarts-synchart-images.tar.gz`, ~486 MB). After downloading, extract the images; the archive contains an images/folder. After extracting the archive, you will get an images/ folder. Place this folder inside the repository root (i.e., the same directory as README.md). The training script expects the images to be located at ./images/.
 
 ## Code Structure
 
@@ -57,18 +41,25 @@ This will populate data/raw/echarts/screenshots/ and data/raw/echarts/codes/.
 3. **Download the dataset**  
    Download the archive from Zenodo and extract it:
    ```bash
-   tar -xzf echarts-synchart-images.tar.gz      # 解压后得到 images/ 文件夹
+   # 下载压缩包（从 Zenodo 获取）后解压
+   tar -xzf echarts-synchart-images.tar.gz
+   # 解压后得到 images/ 文件夹，将其移动到仓库根目录
+   mv images/ /path/to/echarts-synchart/
+
    ```
    Place the images/folder in the root directory of this repository (alongside README.md). The default DATA_ROOT in train_classifier.py is set to'.', which expects the images/folder in the repository root.
    The CSV files (train.csv, val.csv, test.csv) are already included in the repository – you do not need to regenerate them.
 4. **Train the baseline model**
-   ```bash  
-     # Ensure DATA_ROOT in train_classifier.py points to the directory containing images/ (e.g., DATA_ROOT = '.')
-   python scripts/train_classifier.py --batch_size 64 --epochs 20
+   ```bash   
+      # 确保 train.csv, val.csv, test.csv 位于仓库根目录（它们已包含在仓库中）
+      # 确保 images/ 文件夹位于仓库根目录（解压后移动至此）
+      # 然后执行：
+    python scripts/train_classifier.py --batch_size 64 --epochs 20
    ```  
 5. **Generate confusion matrix**
    ```bash  
      # The confusion matrix script uses the same DATA_ROOT setting as train_classifier.py.
+     # 确保 train_classifier.py 已成功运行，生成了模型权重文件（默认 chart_classifier_resnet50.pth）
    python scripts/plot_confusion_matrix.py
    ```  
 
@@ -88,13 +79,13 @@ See requirements.txt for a full list. Main packages:
 ## Citation
 If you use this code or dataset in your research, please cite:
 ```bibtex
-@article{li2024echarts,
-  title={ECharts-SynChart: A Large-Scale Synthetic Dataset for Chart Type Classification},
-  author={Li, Yunzhe},
-  journal={...},
-  year={2024},
+@misc{li2025echarts,
+  title={ECharts-SynChart: A Synthetic Chart Dataset with Code-Level Augmentation for Chart Type Classification},
+  author={Yunzhe Li},
+  year={2026},
+  howpublished={\url{https://github.com/dfps-1234/echarts-synchart}},
   doi={10.5281/zenodo.19401089}
 }
 ```
 ## License
-This project is licensed under the MIT License – see the LICENSE file for details.
+This project is licensed under the Apache License 2.0 – see the LICENSE file for details.
